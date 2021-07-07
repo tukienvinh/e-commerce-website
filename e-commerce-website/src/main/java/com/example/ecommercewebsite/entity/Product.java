@@ -7,17 +7,15 @@ import java.time.LocalDate;
 @Table(name="PRODUCT")
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="name")
     private String name;
 
-    @Column(name="category_id")
-    private Long category_id;
-
-//    @Column(name="publisher_id")
-//    private Long publisher_id;
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name="author_id")
@@ -40,6 +38,9 @@ public class Product {
 
     @Column(name="updated_date")
     private LocalDate updated_date;
+
+    @Column(name="rating")
+    private Double rating;
 
     public Long getId() {
         return id;
@@ -89,14 +90,6 @@ public class Product {
         this.stock = stock;
     }
 
-    public Long getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
-    }
-
     public String getImage() {
         return image;
     }
@@ -119,5 +112,13 @@ public class Product {
 
     public void setUpdated_date(LocalDate updated_date) {
         this.updated_date = updated_date;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

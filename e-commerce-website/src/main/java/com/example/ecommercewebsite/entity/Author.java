@@ -15,8 +15,6 @@ public class Author {
     @Column(name="country")
     private String country;
 
-    @Column(name="rating")
-    private Double rating;
 
     public Long getId() {
         return id;
@@ -40,13 +38,5 @@ public class Author {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
     }
 }
