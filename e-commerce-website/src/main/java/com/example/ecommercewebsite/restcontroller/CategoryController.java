@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping("/categories")
     public List<Category> getCategories() {
         List<Category> categories = categoryService.retrieveCategories();
         return categories;
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/category/{categoryId}")
     public Optional<Category> findCategory(@PathVariable Long categoryId) {
         Optional<Category> category = categoryService.getCategory(categoryId);
         if (category.isPresent() == false)
@@ -30,12 +30,12 @@ public class CategoryController {
         return category;
     }
 
-    @PostMapping
+    @PostMapping("/category")
     public Category saveCategory(@RequestBody Category category) {
         return categoryService.saveCategory(category);
     }
 
-    @DeleteMapping("/{categoryId}")
+    @DeleteMapping("/category/{categoryId}")
     public HashMap<String, String> deleteCategory(@PathVariable(name="categoryId") Long categoryId) {
         Optional<Category> category = categoryService.getCategory(categoryId);
         if (category.isPresent() == false) {
@@ -47,10 +47,11 @@ public class CategoryController {
         return map;
     }
 
-    @PutMapping("/update/{id}")
-    public HashMap<String, String> updateCategory(@RequestBody Category newCategory, @PathVariable Long id) {
+    @PutMapping("/category")
+    public HashMap<String, String> updateCategory(@RequestBody Category newCategory) {
         HashMap<String, String> map = new HashMap<>();
-        if (categoryService.updateCategory(newCategory, id) == null) {
+        Category category = categoryService.updateCategory(newCategory);
+        if (category == null) {
             map.put("message", "Fail to update category!");
         }
         else map.put("message", "Update successfully!");

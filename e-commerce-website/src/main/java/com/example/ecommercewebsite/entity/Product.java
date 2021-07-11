@@ -1,7 +1,9 @@
 package com.example.ecommercewebsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="PRODUCT")
@@ -15,11 +17,11 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name="category_id")
+    @JsonIgnoreProperties("products")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name="author_id")
-    private Author author;
+    @Column(name="author")
+    private String author;
 
     @Column(name="description")
     private String description;
@@ -34,10 +36,10 @@ public class Product {
     private String image;
 
     @Column(name="created_date")
-    private LocalDate created_date;
+    private Date created_date;
 
     @Column(name="updated_date")
-    private LocalDate updated_date;
+    private Date updated_date;
 
     @Column(name="rating")
     private Double rating;
@@ -58,11 +60,19 @@ public class Product {
         this.name = name;
     }
 
-    public Author getAuthor() {
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
@@ -98,19 +108,19 @@ public class Product {
         this.image = image;
     }
 
-    public LocalDate getCreated_date() {
+    public Date getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(LocalDate created_date) {
+    public void setCreated_date(Date created_date) {
         this.created_date = created_date;
     }
 
-    public LocalDate getUpdated_date() {
+    public Date getUpdated_date() {
         return updated_date;
     }
 
-    public void setUpdated_date(LocalDate updated_date) {
+    public void setUpdated_date(Date updated_date) {
         this.updated_date = updated_date;
     }
 

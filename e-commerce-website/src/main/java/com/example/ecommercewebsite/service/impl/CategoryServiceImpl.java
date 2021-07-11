@@ -1,9 +1,6 @@
 package com.example.ecommercewebsite.service.impl;
 
 import com.example.ecommercewebsite.entity.Category;
-import com.example.ecommercewebsite.entity.Product;
-import com.example.ecommercewebsite.exception.CategoryExistedException;
-import com.example.ecommercewebsite.exception.CategoryNameNullException;
 import com.example.ecommercewebsite.repository.CategoryRepository;
 import com.example.ecommercewebsite.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +14,28 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public void isValidate(Category category) {
+    public boolean isValidate(Category category) {
         Optional<Category> categoryOptional = categoryRepository.findCategoryByName(category.getName());
         if (category.getName() == null || category.getName().length() == 0)
-            throw new CategoryNameNullException();
+            return false;
         if (categoryOptional.isPresent())
-            throw new CategoryExistedException(category.getName());
+            return false;
+        return true;
     }
 
     @Override
     public List<Category> retrieveCategories() {
-        List<Category> categories = categoryRepository.findAll();
-        return categories;
+        return categoryRepository.findAll();
     }
 
     @Override
     public Optional<Category> getCategory(Long categoryId) {
-        Optional<Category> category = categoryRepository.findById(categoryId);
-        return category;
+        return categoryRepository.findById(categoryId);
+    }
+
+    @Override
+    public Optional<Category> getCategoryByName(String categoryName) {
+        return categoryRepository.findCategoryByName(categoryName);
     }
 
     @Override
@@ -49,16 +50,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(Category newCategory, Long id) {
-        isValidate(newCategory);
-        return categoryRepository.findById(id)
-                .map(category -> {
-                    category.setName(newCategory.getName());
-                    return saveCategory(category);
-                })
-                .orElseGet(() -> {
-                    newCategory.setId(id);
-                    return saveCategory(newCategory);
-                });
+    public Category updateCategory(Category newCategory) {
+        if (isValidate(newCategory) == true)
+            return categoryRepository.findById(newCategory.getId())
+                    .map(category -> {
+                        category.setName(newCategory.getName());
+                        return saveCategory(category);
+                    })
+                    .orElseGet(() -> saveCategory(newCategory));
+        return null;
     }
 }
