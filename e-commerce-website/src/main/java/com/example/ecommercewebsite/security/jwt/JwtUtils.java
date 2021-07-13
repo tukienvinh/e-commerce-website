@@ -18,6 +18,7 @@ import java.util.Date;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
+    @Autowired
     private LoggedOutJwtTokenCache loggedOutJwtTokenCache;
 
     @Value("${rookies.app.jwtSecret}")
@@ -54,6 +55,7 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            validateTokenIsNotForALoggedOutDevice(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature: {}", e.getMessage());
