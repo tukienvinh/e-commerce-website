@@ -41,18 +41,28 @@ create table roles (
 	name varchar(250) not null
 );
 
-drop table if exists customer;
+drop table if exists users;
 
-drop sequence if exists customer_sequence;
+drop sequence if exists users_sequence;
 
-create sequence customer_sequence increment 1 start 1;
+create sequence users_sequence increment 1 start 1;
 
-create table customer (
-	id int not null default nextval('customer_sequence') primary key,
+create table users (
+	id int not null default nextval('users_sequence') primary key,
 	name varchar(50) not null,
-	address text not null,
+	username varchar(50) not null,
 	email varchar(50) not null,
+	password text not null,
+	address text
+);
+
+drop table if exists users_roles;
+
+create table users_roles (
+	user_id int not null,
 	role_id int not null,
+	primary key(user_id, role_id),
+	foreign key(user_id) references users (id),
 	foreign key(role_id) references roles (id)
 );
 
@@ -64,10 +74,10 @@ create sequence orders_sequence increment 1 start 1;
 
 create table orders (
 	id int not null default nextval('orders_sequence') primary key,
-	customer_id int not null,
+	user_id int not null,
 	total_price numeric check (total_price > 0) not null,
 	order_time timestamp not null,
-	foreign key(customer_id) references customer (id)
+	foreign key(user_id) references user (id)
 );
 
 drop table if exists order_detail;
@@ -89,10 +99,14 @@ create sequence rating_sequence increment 1 start 1;
 
 create table rating (
 	product_id int not null,
-	customer_id int not null ,
+	user_id int not null ,
 	rating_point decimal(10, 1) not null,
 	content varchar(250),
-	primary key (product_id, customer_id),
+	primary key (product_id, user_id),
 	foreign key(product_id) references product(id),
-	foreign key(customer_id) references customer(id)
+	foreign key(user_id) references user(id)
 );
+
+insert into roles (name) values
+	('ROLE_USER'),
+	('ROLE_ADMIN');
