@@ -6,7 +6,8 @@ create sequence category_sequence increment 1 start 1;
 
 create table category (
 	id int not null default nextval('category_sequence') primary key,
-	name varchar(250) unique not null
+	name varchar(60) unique not null,
+	description varchar(250) not null
 );
 
 drop table if exists product;
