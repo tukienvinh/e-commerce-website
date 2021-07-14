@@ -46,6 +46,10 @@ public class User {
     @JsonIgnoreProperties("user")
     private List<Order> orders;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    private List<Rating> ratings;
+
     public User(String name, String username, String email, String password) {
         this.name = name;
         this.username = username;
