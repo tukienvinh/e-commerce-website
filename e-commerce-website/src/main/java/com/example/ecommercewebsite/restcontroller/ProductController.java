@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products")
+    @GetMapping
     public List<Product> getProducts() {
         List<Product> products = productService.retrieveProducts();
         return products;

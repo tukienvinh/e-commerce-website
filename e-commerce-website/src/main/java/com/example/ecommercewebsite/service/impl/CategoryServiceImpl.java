@@ -55,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             return categoryRepository.findById(newCategory.getId())
                     .map(category -> {
                         category.setName(newCategory.getName());
+                        category.setDescription(newCategory.getDescription());
                         return saveCategory(category);
                     })
                     .orElseGet(() -> saveCategory(newCategory));

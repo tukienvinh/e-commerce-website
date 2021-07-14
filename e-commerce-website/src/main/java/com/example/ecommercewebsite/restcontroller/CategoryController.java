@@ -6,32 +6,33 @@ import com.example.ecommercewebsite.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/categories")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/categories")
+    @GetMapping
     public List<Category> getCategories() {
         List<Category> categories = categoryService.retrieveCategories();
         return categories;
     }
 
-    @GetMapping("/category/{categoryId}")
-    public Optional<Category> findCategory(@PathVariable Long categoryId) {
-        Optional<Category> category = categoryService.getCategory(categoryId);
+    @GetMapping("/search")
+    public Optional<Category> findCategory(@RequestParam String categoryName) {
+        Optional<Category> category = categoryService.getCategoryByName(categoryName);
         if (category.isPresent() == false)
-            throw new CategoryNotFoundException(categoryId);
+            throw new CategoryNotFoundException(categoryName);
         return category;
     }
 
     @PostMapping("/category")
-    public Category saveCategory(@RequestBody Category category) {
+    public Category saveCategory(@Valid @RequestBody Category category) {
         return categoryService.saveCategory(category);
     }
 
@@ -48,7 +49,7 @@ public class CategoryController {
     }
 
     @PutMapping("/category")
-    public HashMap<String, String> updateCategory(@RequestBody Category newCategory) {
+    public HashMap<String, String> updateCategory(@Valid @RequestBody Category newCategory) {
         HashMap<String, String> map = new HashMap<>();
         Category category = categoryService.updateCategory(newCategory);
         if (category == null) {

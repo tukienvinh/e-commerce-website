@@ -3,6 +3,7 @@ package com.example.ecommercewebsite.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Entity
@@ -12,6 +13,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(max = 250)
     @Column(name="name")
     private String name;
 
@@ -20,15 +23,22 @@ public class Product {
     @JsonIgnoreProperties("products")
     private Category category;
 
+    @NotBlank
+    @Size(max = 100)
     @Column(name="author")
     private String author;
 
+    @NotBlank
     @Column(name="description")
     private String description;
 
+    @NotNull
+    @DecimalMin(value = "10000.0", message = "Min value of book is 10000")
     @Column(name="price")
     private Double price;
 
+    @NotNull
+    @DecimalMin(value = "1", message = "Min stock of book is 1")
     @Column(name = "stock")
     private Long stock;
 
@@ -41,6 +51,7 @@ public class Product {
     @Column(name="updated_date")
     private Date updated_date;
 
+    @NotNull
     @Column(name="rating")
     private Double rating;
 
