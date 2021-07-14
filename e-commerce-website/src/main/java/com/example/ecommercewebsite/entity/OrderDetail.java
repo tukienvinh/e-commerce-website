@@ -8,13 +8,17 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "order_detail")
 public class OrderDetail {
     @Id
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    private Long id;
 
     @Id
+    private Long product_id;
+
+    @ManyToOne
+    @JoinColumn(name = "id", insertable = false, updatable = false)
+    private Order order;
+
     @OneToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
     @NotBlank
