@@ -4,6 +4,7 @@ import com.example.ecommercewebsite.entity.Category;
 import com.example.ecommercewebsite.exception.CategoryNotFoundException;
 import com.example.ecommercewebsite.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
+    @PreAuthorize("hasRole('ADMIN')")
     public Category saveCategory(@Valid @RequestBody Category category) {
         return categoryService.saveCategory(category);
     }

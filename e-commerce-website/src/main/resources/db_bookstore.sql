@@ -28,6 +28,7 @@ create table product (
 	created_date timestamp not null,
 	updated_date timestamp,
 	rating decimal(10, 1) not null,
+	num_rating int not null,
 	foreign key(category_id) references category(id)
 );
 
@@ -103,6 +104,7 @@ create table rating (
 	user_id int not null ,
 	rating_point decimal(10, 1) not null,
 	content varchar(250),
+	rating_date date,
 	primary key (product_id, user_id),
 	foreign key(product_id) references product(id),
 	foreign key(user_id) references user(id)

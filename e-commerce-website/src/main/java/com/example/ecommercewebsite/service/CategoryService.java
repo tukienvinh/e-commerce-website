@@ -12,8 +12,6 @@ public interface CategoryService {
 
     public Optional<Category> getCategoryByName(String categoryName);
 
-//    public List<Product> getCategoryProducts(String category_name);
-
     public Category saveCategory(Category category);
 
     public void deleteCategory(Long categoryId);

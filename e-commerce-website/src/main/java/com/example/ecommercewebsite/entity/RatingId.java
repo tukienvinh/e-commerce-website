@@ -7,6 +7,9 @@ public class RatingId implements Serializable {
 
     private Long user_id;
 
+    public RatingId() {
+
+    }
     public RatingId(Long product_id, Long user_id) {
         this.product_id = product_id;
         this.user_id = user_id;

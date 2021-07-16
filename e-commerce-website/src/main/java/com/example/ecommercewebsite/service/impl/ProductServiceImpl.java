@@ -58,10 +58,11 @@ public class ProductServiceImpl implements ProductService {
                         product.setCreated_date(newProduct.getCreated_date());
                         product.setUpdated_date(newProduct.getUpdated_date());
                         product.setImage(newProduct.getImage());
-                        product.setRating(newProduct.getRating());
+                        product.setRatings(newProduct.getRatings());
                         return saveProduct(product);
                     })
                     .orElseGet(() -> saveProduct(newProduct));
         return null;
     }
+
 }

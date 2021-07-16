@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="PRODUCT")
@@ -51,9 +52,15 @@ public class Product {
     @Column(name="updated_date")
     private Date updated_date;
 
-    @NotNull
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @JsonIgnoreProperties("product")
+    private List<Rating> ratings;
+
     @Column(name="rating")
     private Double rating;
+
+    @Column(name="num_rating")
+    private Long num_rating = 0L;
 
     public Long getId() {
         return id;
@@ -135,11 +142,27 @@ public class Product {
         this.updated_date = updated_date;
     }
 
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
     public Double getRating() {
         return rating;
     }
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public Long getNum_rating() {
+        return num_rating;
+    }
+
+    public void setNum_rating(Long num_rating) {
+        this.num_rating = num_rating;
     }
 }
