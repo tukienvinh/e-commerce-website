@@ -39,7 +39,6 @@ public class Product {
     private Double price;
 
     @NotNull
-    @DecimalMin(value = "1", message = "Min stock of book is 1")
     @Column(name = "stock")
     private Long stock;
 
@@ -47,10 +46,10 @@ public class Product {
     private String image;
 
     @Column(name="created_date")
-    private Date created_date;
+    private String created_date;
 
     @Column(name="updated_date")
-    private Date updated_date;
+    private String updated_date;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     @JsonIgnoreProperties("product")
@@ -126,19 +125,19 @@ public class Product {
         this.image = image;
     }
 
-    public Date getCreated_date() {
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 
-    public Date getUpdated_date() {
+    public String getUpdated_date() {
         return updated_date;
     }
 
-    public void setUpdated_date(Date updated_date) {
+    public void setUpdated_date(String updated_date) {
         this.updated_date = updated_date;
     }
 
