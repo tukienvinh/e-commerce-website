@@ -6,6 +6,7 @@ import com.example.ecommercewebsite.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public Product saveProduct(@RequestBody Product product) {
+    public Product saveProduct(@Valid @RequestBody Product product) {
         return productService.saveProduct(product);
     }
 

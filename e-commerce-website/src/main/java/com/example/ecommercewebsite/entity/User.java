@@ -1,7 +1,6 @@
 package com.example.ecommercewebsite.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -24,7 +23,6 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @NaturalId
     @NotBlank
     @Email
     private String email;
@@ -36,14 +34,17 @@ public class User {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "status")
+    private boolean status = true;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    @JsonIgnoreProperties("user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user_order")
+    @JsonIgnoreProperties("user_order")
     private List<Order> orders;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -55,6 +56,8 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.status = true;
+        this.address = null;
     }
 
     public User() {
@@ -115,6 +118,22 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

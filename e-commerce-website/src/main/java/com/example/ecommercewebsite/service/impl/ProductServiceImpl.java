@@ -6,7 +6,8 @@ import com.example.ecommercewebsite.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +36,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product saveProduct(Product newProduct) {
         isValidate(newProduct);
-        newProduct.setCreated_date(new Date());
-        newProduct.setUpdated_date(new Date());
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        newProduct.setCreated_date(formattedDateTime);
+        newProduct.setUpdated_date(formattedDateTime);
         return productRepository.save(newProduct);
     }
 
@@ -45,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(productId);
     }
 
+    @Override
     public Product updateProduct(Product newProduct) {
         if (isValidate(newProduct) == true)
             return productRepository.findById(newProduct.getId())

@@ -4,11 +4,8 @@ import com.example.ecommercewebsite.entity.Product;
 import com.example.ecommercewebsite.entity.Rating;
 import com.example.ecommercewebsite.repository.ProductRepository;
 import com.example.ecommercewebsite.repository.RatingRepository;
-import com.example.ecommercewebsite.security.service.UserDetailsImpl;
 import com.example.ecommercewebsite.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

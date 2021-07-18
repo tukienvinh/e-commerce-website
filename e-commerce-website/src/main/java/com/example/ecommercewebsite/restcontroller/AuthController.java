@@ -11,6 +11,8 @@ import com.example.ecommercewebsite.repository.RoleRepository;
 import com.example.ecommercewebsite.repository.UserRepository;
 import com.example.ecommercewebsite.security.jwt.JwtUtils;
 import com.example.ecommercewebsite.security.service.UserDetailsImpl;
+import com.example.ecommercewebsite.service.UserSerivce;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,6 +52,9 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @Autowired
+    private UserSerivce userSerivce;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -62,6 +68,11 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        Optional<User> user = userSerivce.getUserByUser_name(userDetails.getUsername());
+        if (user.get().getStatus() == false)
+            return ResponseEntity.ok(new MessageResponse("User is blocked."));
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
