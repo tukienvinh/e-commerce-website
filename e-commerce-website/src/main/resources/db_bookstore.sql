@@ -23,10 +23,10 @@ create table product (
 	author varchar(100) not null,
 	description text not null,
 	price numeric check(price > 0) not null,
-	stock int check(stock > 0) not null,
+	stock int not null,
 	image varchar(250),
-	created_date timestamp not null,
-	updated_date timestamp,
+	created_date text not null,
+	updated_date text,
 	rating decimal(10, 1) not null,
 	num_rating int not null,
 	foreign key(category_id) references category(id)
@@ -55,7 +55,8 @@ create table users (
 	username varchar(50) not null,
 	email varchar(50) not null,
 	password text not null,
-	address text
+	address text,
+	status boolean
 );
 
 drop table if exists users_roles;
@@ -78,7 +79,9 @@ create table orders (
 	id int not null default nextval('orders_sequence') primary key,
 	user_id int not null,
 	total_price numeric check (total_price > 0) not null,
-	order_time timestamp not null,
+	order_time text not null,
+	validated_time text,
+	status int,
 	foreign key(user_id) references user (id)
 );
 
