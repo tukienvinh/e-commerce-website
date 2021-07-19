@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #352275;
+    background: #57117f;
     padding: 0px 40px;
   }
   
@@ -10,6 +10,7 @@
     list-style: none;
     display: inline-block;
     margin: 0px 40px;
+    padding-top: 10px;
     font-size: 22px;
     color: white;
   }
@@ -18,5 +19,28 @@
     display: inline-block;
     color: royalblue;
     font-size: 22px;
+    font-family: 'Courier New', Courier, monospace;
   }
   
+  #navbar .search-container {
+    float: right;
+  }
+  
+  #navbar input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    width: 400px;
+    border: none;
+  }
+  
+  #navbar .search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }
