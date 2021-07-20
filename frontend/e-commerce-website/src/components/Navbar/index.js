@@ -30,7 +30,7 @@ export default class index extends Component {
 
           <ul>
             <Link to="/signin">
-              <li>Sign in</li>
+              <li>Sign in / Sign up</li>
             </Link>
           </ul>
         </nav>
