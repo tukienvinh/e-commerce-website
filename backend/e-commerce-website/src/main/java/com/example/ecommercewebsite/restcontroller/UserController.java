@@ -34,12 +34,12 @@ public class UserController {
     private UserSerivce userSerivce;
 
     @GetMapping
-    private ResponseEntity<?> viewProfile() {
+    public ResponseEntity<?> viewProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         Optional<User> user = userSerivce.viewProfile(userDetails.getId());
-        return ResponseEntity.ok(new AccountResponse(user.get().getName(), user.get().getEmail(), user.get().getAddress()));
+        return ResponseEntity.ok(new AccountResponse(user.get().getName(), user.get().getUsername(), user.get().getEmail(), user.get().getAddress()));
     }
 
     @GetMapping("/orders")
@@ -86,6 +86,6 @@ public class UserController {
         Optional<User> updatedUser = userSerivce.changeProfile(userDetails.getId(), changeProfileRequest);
         if (updatedUser == null)
             return ResponseEntity.ok(new MessageResponse("Fail to update profile"));
-        return ResponseEntity.ok(new AccountResponse(updatedUser.get().getName(), updatedUser.get().getEmail(), updatedUser.get().getAddress()));
+        return ResponseEntity.ok(new AccountResponse(updatedUser.get().getName(), updatedUser.get().getUsername(), updatedUser.get().getEmail(), updatedUser.get().getAddress()));
     }
 }

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const endpoint = "https://jsonplaceholder.typicode.com";
-const token = localStorage.getItem("token");
+const endpoint = "http://localhost:8080";
+var token = localStorage.getItem("token");
 
 export function get(url) {
   console.log(token);
@@ -15,7 +15,9 @@ export function put(url, body) {
 }
 
 export function post(url, body) {
-  return axios.post(endpoint + url, body);
+  return axios.post(endpoint + url, body, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 export function del(url) {

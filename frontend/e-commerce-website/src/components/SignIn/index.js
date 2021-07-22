@@ -1,21 +1,56 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { post } from "../../httpHelper";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import './SignIn.css'
 
 export default class index extends Component {
+    state = {
+        username: "",
+        password: "",
+        redirect: false
+    };
+    
+    handleFormSubmit(e) {
+        e.preventDefault();
+        post(`/api/auth/signin`, {
+            username: this.state.username,
+            password: this.state.password
+          }).then((response) => {
+            console.log(response.data);
+            localStorage.setItem("name", response.data.name);
+            localStorage.setItem("username", response.data.username);
+            localStorage.setItem("role", response.data.roles);
+            localStorage.setItem("token", response.data.accessToken);
+            this.setState({redirect: true});
+            this.props.onSignIn(e);
+          }).catch((response) => {
+              console.log(response);
+          });
+        
+    }
+
+    handleFieldChange(e, key) {
+        console.log(e.target.value);
+        this.setState({ [key]: e.target.value});
+    }
+
     render() {
+        if (this.state.redirect === true)
+            return <Redirect to ={{ pathname:"/"}}/>
         return (
             <div id="signin_form">
                 <h2>Sign In</h2>
-                <Form className="form">
+                <Form className="form" onSubmit={(e) => this.handleFormSubmit(e)}>
                     <FormGroup id="username_group">
                         <Label for="username">Username</Label>
                         <Input
                         type="text"
                         name="username"
                         id="username"
+                        value={this.state.firstName}
                         placeholder="Username"
+                        onChange={(e) => this.handleFieldChange(e, "username")}
                         />
                     </FormGroup>
                     <FormGroup id="password_group">
@@ -24,7 +59,9 @@ export default class index extends Component {
                         type="password"
                         name="password"
                         id="password"
+                        value={this.state.firstName}
                         placeholder="********"
+                        onChange={(e) => this.handleFieldChange(e, "password")}
                         />
                     </FormGroup>
                     <Button id="button">Sign in</Button>

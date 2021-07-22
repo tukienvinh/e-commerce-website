@@ -5,6 +5,7 @@ import com.example.ecommercewebsite.entity.RoleName;
 import com.example.ecommercewebsite.entity.User;
 import com.example.ecommercewebsite.payload.request.LoginRequest;
 import com.example.ecommercewebsite.payload.request.SignupRequest;
+import com.example.ecommercewebsite.payload.response.AccountResponse;
 import com.example.ecommercewebsite.payload.response.JwtResponse;
 import com.example.ecommercewebsite.payload.response.MessageResponse;
 import com.example.ecommercewebsite.repository.RoleRepository;
@@ -81,6 +82,8 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getName(),
+                userDetails.getAddress(),
                 roles));
     }
 
@@ -99,7 +102,7 @@ public class AuthController {
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getUsername(),
+        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
@@ -131,6 +134,6 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new AccountResponse(user.getName(), user.getUsername(), user.getEmail(), user.getAddress(), signUpRequest.getPassword()));
     }
 }

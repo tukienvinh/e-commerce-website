@@ -8,25 +8,40 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSearchKey= this.handleSearchKey.bind(this);
+    this.handleSignIn = this.handleSignIn.bind(this);
+  }
+
   state = {
-    bootcamp: "Rookies",
+    username: "",
+    password: "",
+    role: "",
+    isLoggedIn: false
   };
 
   handleSearchKey(e) {
     console.log(e.target.value);
-  }
+  };
+
+  async handleSignIn(e) {
+    await this.setState({ username: localStorage.getItem("username"), password: e.target.password.value, isLoggedIn: true});
+    console.log(this.state.username);
+    console.log(this.state.password);
+  };
 
   render() {
     return (
       <Router>
           <div className="App">
-            <Navbar onSearchKey={(e) => this.handleSearchKey(e)} />
+            <Navbar onSearchKey={(e) => this.handleSearchKey(e)} isLoggedIn={this.state.isLoggedIn}/>
             <Switch>
               <Route exact path="/">
-                <Home bootcamp={this.state.bootcamp}/>
+                <Home />
               </Route>
               <Route exact path="/signin">
-                <SignIn />
+                <SignIn onSignIn={ (e) => this.handleSignIn(e) }/>
               </Route>
               <Route exact path="/signup">
                 <SignUp />

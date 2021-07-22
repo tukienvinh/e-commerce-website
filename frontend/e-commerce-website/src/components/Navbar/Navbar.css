@@ -44,3 +44,13 @@
     border: none;
     cursor: pointer;
   }
+
+  #dropdown {
+    margin-right: 55px;
+  }
+
+  #dropdown_toggle {
+    border: none;
+    box-shadow: none;
+    background-color: #57117f;
+  }
