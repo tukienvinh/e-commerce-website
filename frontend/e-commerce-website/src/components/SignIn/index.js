@@ -5,10 +5,15 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import './SignIn.css'
 
 export default class index extends Component {
+    constructor(props) {
+        super(props);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleFieldChange = this.handleFieldChange.bind(this);
+    }
+
     state = {
         username: "",
         password: "",
-        redirect: false
     };
     
     handleFormSubmit(e) {
@@ -16,17 +21,18 @@ export default class index extends Component {
         post(`/api/auth/signin`, {
             username: this.state.username,
             password: this.state.password
-          }).then((response) => {
+        }).then((response) => {
             console.log(response.data);
             localStorage.setItem("name", response.data.name);
             localStorage.setItem("username", response.data.username);
             localStorage.setItem("role", response.data.roles);
             localStorage.setItem("token", response.data.accessToken);
-            this.setState({redirect: true});
+            localStorage.setItem("loggedIn", true);
+            console.log(localStorage.getItem("token"));
             this.props.onSignIn(e);
-          }).catch((response) => {
-              console.log(response);
-          });
+        }).catch((error) => {
+              alert("Sign in failed.");
+        });
         
     }
 
@@ -36,7 +42,7 @@ export default class index extends Component {
     }
 
     render() {
-        if (this.state.redirect === true)
+        if (localStorage.getItem("loggedIn"))
             return <Redirect to ={{ pathname:"/"}}/>
         return (
             <div id="signin_form">

@@ -1,6 +1,7 @@
 package com.example.ecommercewebsite.restcontroller;
 
 import com.example.ecommercewebsite.entity.Category;
+import com.example.ecommercewebsite.entity.Product;
 import com.example.ecommercewebsite.exception.CategoryNotFoundException;
 import com.example.ecommercewebsite.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class CategoryController {
         if (category.isPresent() == false)
             throw new CategoryNotFoundException(categoryName);
         return category;
+    }
+
+    @GetMapping("/{categoryName}")
+    public List<Product> getProductsOfCategory(@PathVariable String categoryName) {
+        return categoryService.getProductsByCategoryName(categoryName);
     }
 
     @PostMapping("/category")

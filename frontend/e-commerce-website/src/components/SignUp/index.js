@@ -5,30 +5,86 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import './SignUp.css'
 
 export default class index extends Component {
+    constructor(props) {
+        super(props);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.validateField = this.validateField.bind(this);
+    }
+
     state = {
         name: "",
         username: "",
         email: "",
         password: "",
-        redirect: false
+        confirm_password: "",
+        redirect: false,
+        errors: {}
+    };
+    
+    validateField() {
+        var isValid = true;
+        var errors = {};
+
+        if (this.state.name === "") {
+            isValid = false;
+            errors["name"] = "Please enter your name";
+        }
+
+        if (this.state.email === "") {
+            isValid = false;
+            errors["email"] = "Please enter your email address";
+        }
+
+        if (this.state.username === "") {
+            isValid = false;
+            errors["username"] = "Please enter your username";
+        }
+
+        if (/\s/.test(this.state.username)) {
+            isValid = false;
+            errors["username"] = "Username can't contain blank";
+        }
+
+        if (this.state.password === "") {
+            isValid = false;
+            errors["password"] = "Please enter your password.";
+          }
+      
+          if (this.state.confirm_password === "") {
+            isValid = false;
+            errors["confirm_password"] = "Please enter your confirm password.";
+          }
+      
+          if (this.state.password !== this.state.confirm_password) {
+              isValid = false;
+              errors["confirm_password"] = "Confirm password does not match.";
+          }
+
+          this.setState({
+            errors
+          });
+
+          return isValid;
     };
 
     handleFormSubmit(e) {
         e.preventDefault();
-        post(`/api/auth/signup`, {
-            name: this.state.name,
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password
-
-          }).then((response) => {
-            console.log(response.data);
-            this.setState({redirect: true});
-
-          }).catch((response) => {
-              console.log(response);
-          });
-        
+        if(this.validateField()) {
+            post(`/api/auth/signup`, {
+                name: this.state.name,
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+    
+              }).then((response) => {
+                console.log(response.data);
+                this.setState({redirect: true});
+    
+              }).catch((error) => {
+                  alert(error.response.data.message);
+              });
+        }
     }
 
     handleFieldChange(e, key) {
@@ -52,6 +108,7 @@ export default class index extends Component {
                         placeholder="Your name"
                         onChange={(e) => this.handleFieldChange(e, "name")}
                         />
+                        <div className="text-danger">{this.state.errors.name}</div>
                     </FormGroup>
                     <FormGroup id="username_group">
                         <Label for="username">Username</Label>
@@ -62,6 +119,7 @@ export default class index extends Component {
                         placeholder="Username"
                         onChange={(e) => this.handleFieldChange(e, "username")}
                         />
+                        <div className="text-danger">{this.state.errors.username}</div>
                     </FormGroup>
                     <FormGroup id="email_group">
                         <Label for="email">Email</Label>
@@ -72,6 +130,7 @@ export default class index extends Component {
                         placeholder="Email"
                         onChange={(e) => this.handleFieldChange(e, "email")}
                         />
+                        <div className="text-danger">{this.state.errors.email}</div>
                     </FormGroup>
                     <FormGroup id="password_group">
                         <Label for="password">Password</Label>
@@ -82,6 +141,18 @@ export default class index extends Component {
                         placeholder="********"
                         onChange={(e) => this.handleFieldChange(e, "password")}
                         />
+                        <div className="text-danger">{this.state.errors.password}</div>
+                    </FormGroup>
+                    <FormGroup id="confirm_password_group">
+                        <Label for="confirm_password">Confirm Password</Label>
+                        <Input
+                        type="password"
+                        name="confirm_password"
+                        id="confirm_password"
+                        placeholder="********"
+                        onChange={(e) => this.handleFieldChange(e, "confirm_password")}
+                        />
+                        <div className="text-danger">{this.state.errors.confirm_password}</div>
                     </FormGroup>
                     <Button id="button">Sign up</Button>
                     <div id="signin">

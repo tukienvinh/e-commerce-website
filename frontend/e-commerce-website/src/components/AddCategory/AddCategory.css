@@ -1,4 +1,4 @@
-#signin_form {
+#add_category_form {
     border: 5px solid #d3d3d3;
     border-radius: .5em;
     margin-bottom: 1em;
@@ -21,31 +21,7 @@ h2 {
     text-align: left;
 }
 
-#username_group {
-    margin-top: 10px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-
-#email_group {
-    margin-top: 10px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-
-#password_group {
-    margin-top: 10px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-
-#confirm_password_group {
+#description_group {
     margin-top: 10px;
     width: 300px;
     margin-left: auto;
@@ -70,10 +46,6 @@ label {
     font-weight: 600;
 }
 
-#signin {
+#signup {
     margin-top: 10px;
-}
-
-#role {
-    width: 300px;
 }

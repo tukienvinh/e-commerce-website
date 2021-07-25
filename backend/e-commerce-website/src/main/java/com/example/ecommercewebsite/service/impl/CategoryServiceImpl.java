@@ -1,6 +1,7 @@
 package com.example.ecommercewebsite.service.impl;
 
 import com.example.ecommercewebsite.entity.Category;
+import com.example.ecommercewebsite.entity.Product;
 import com.example.ecommercewebsite.repository.CategoryRepository;
 import com.example.ecommercewebsite.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Optional<Category> getCategoryByName(String categoryName) {
         return categoryRepository.findCategoryByName(categoryName);
+    }
+
+    @Override
+    public List<Product> getProductsByCategoryName(String categoryName) {
+        Optional<Category> category = categoryRepository.findCategoryByName(categoryName);
+        if (category.isPresent())
+            return category.get().getProducts();
+        return null;
     }
 
     @Override

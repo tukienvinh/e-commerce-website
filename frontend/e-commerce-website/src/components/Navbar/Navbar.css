@@ -43,6 +43,7 @@
     font-size: 17px;
     border: none;
     cursor: pointer;
+    margin-bottom: 8px;
   }
 
   #dropdown {
@@ -53,4 +54,14 @@
     border: none;
     box-shadow: none;
     background-color: #57117f;
+    font-size: 22px;
+  }
+
+  #dropdown_categories {
+    margin: auto;
+  }
+
+  #item-category {
+    text-decoration: none;
+    color: black;
   }

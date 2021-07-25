@@ -6,20 +6,42 @@ import { get, post } from "../../httpHelper";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FaSearch } from 'react-icons/fa';
 
-export default class index extends Component {
+export default class Navbar extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+    this.toggleCategory = this.toggleCategory.bind(this);
     this.handleViewProfile = this.handleViewProfile.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
+    this.fetchCategoryList = this.fetchCategoryList.bind(this);
   }
 
   state = {
-    dropdownOpen: false
+    dropdownOpen: false,
+    dropdownCategory: false,
+    categoryList: []
+  }
+
+  componentDidMount() {
+    this.fetchCategoryList();
+  }
+
+  fetchCategoryList() {
+    get("/api/categories").then((response) => {
+      if (response.status === 200) {
+        this.setState({ categoryList: response.data });
+      }
+    }).catch((error => {
+        console.log(error.response.data.message);
+    }));
   }
 
   toggle() { 
     this.setState({dropdownOpen: !this.state.dropdownOpen})
+  };
+
+  toggleCategory() { 
+    this.setState({dropdownCategory: !this.state.dropdownCategory})
   };
 
   handleViewProfile() {
@@ -27,8 +49,8 @@ export default class index extends Component {
       if (response.status === 200) {
         console.log(response.data);
       }
-    }).catch((response) => {
-      console.log(response);
+    }).catch((error) => {
+      console.log(error.response.data.message);
     });
   };
 
@@ -36,8 +58,10 @@ export default class index extends Component {
     post(`/api/users/logout`, {}).then((response) => {
       console.log(response.data);
       localStorage.clear();
-    }).catch((response) => {
-        console.log(response);
+      window.location.href = "/";
+      alert(response.data.message);
+    }).catch((error) => {
+        console.log(error.response.data.message);
     });
   }
 
@@ -50,9 +74,18 @@ export default class index extends Component {
             <Link to="/">
               <li>RookieShop</li>
             </Link>
-            <Link to="/categories">
-              <li>Categories</li>
-            </Link>
+            <li>
+              <ButtonDropdown isOpen={this.state.dropdownCategory} toggle={this.toggleCategory} id="dropdown_categories">
+                <DropdownToggle id="dropdown_toggle">
+                    Categories
+                </DropdownToggle>
+                  <DropdownMenu>
+                    {this.state.categoryList.map((category) => (
+                    <Link to={`/categories/${category.name}`} id="item-category"><DropdownItem key={category.id}>{category.name}</DropdownItem></Link>
+                    ))}
+                  </DropdownMenu>
+              </ButtonDropdown>
+            </li>
             <Link to="/products">
               <li>Products</li>
             </Link>
@@ -64,7 +97,7 @@ export default class index extends Component {
               <button type="submit"><FaSearch/></button>
             </form>
           </div>
-          { !this.props.isLoggedIn ? (
+          { !localStorage.getItem("loggedIn") ? (
             <ul>
             <Link to="/signin">
               <li>Sign in</li>
@@ -83,15 +116,19 @@ export default class index extends Component {
                 <DropdownItem onClick={ this.handleViewProfile }>Your profile</DropdownItem>
                 <DropdownItem href="/orders">Your orders</DropdownItem>
                 <DropdownItem href="/edit/password">Change password</DropdownItem>
-                <DropdownItem href={window.location.href} onClick={ this.handleLogOut } >Log out</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem onClick={ this.handleLogOut } >Log out</DropdownItem>
               </DropdownMenu>
               ) : (
                 <DropdownMenu>
-                  <DropdownItem href="/edit/profile">Your profile</DropdownItem>
+                  <DropdownItem onClick={ this.handleViewProfile }>Your profile</DropdownItem>
                   <DropdownItem href="/orders">Pending orders</DropdownItem>
                   <DropdownItem href="/edit/password">Change password</DropdownItem>
+                  <DropdownItem href="/edit/categories">Manage categories</DropdownItem>
+                  <DropdownItem href="/edit/products">Manage products</DropdownItem>
                   <DropdownItem href="/block">Manage users</DropdownItem>
-                  <DropdownItem href="/logout">Log out</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={ this.handleLogOut }>Log out</DropdownItem>
                 </DropdownMenu>
               )}
               </ButtonDropdown>

@@ -1,0 +1,19 @@
+#row_detail {
+    height: 500px;
+}
+
+#row_detail img {
+    height: 100%;
+}
+
+#product_detail {
+    margin-top: 20px;
+}
+
+h5 {
+    margin-top: 20px;
+}
+
+p {
+    margin-top: 20px;
+}
