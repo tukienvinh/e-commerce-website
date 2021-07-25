@@ -11,6 +11,8 @@ public interface CategoryService {
 
     public Optional<Category> getCategory(Long categoryId);
 
+    public Optional<Category> getCategoryById(Long categoryId);
+
     public Optional<Category> getCategoryByName(String categoryName);
 
     public List<Product> getProductsByCategoryName(String categoryName);

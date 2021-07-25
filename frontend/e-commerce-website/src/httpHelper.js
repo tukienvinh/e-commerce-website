@@ -9,7 +9,9 @@ export function get(url) {
 }
 
 export function put(url, body) {
-  return axios.put(endpoint + url, body);
+  return axios.put(endpoint + url, body, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
 }
 
 export function post(url, body) {

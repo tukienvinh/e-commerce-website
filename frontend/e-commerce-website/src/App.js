@@ -8,8 +8,9 @@ import Category from './components/Category';
 import Product from './components/Product';
 import CategoryProducts from './components/CategoryProducts';
 import ProductDetail from './components/ProductDetail';
-import EditCategory from './components/EditCategory';
+import ManageCategory from './components/ManageCategory';
 import AddCategory from './components/AddCategory';
+import EditCategory from './components/EditCategory';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -65,10 +66,13 @@ class App extends React.Component {
                 <ProductDetail />
               </Route>
               <Route exact path="/edit/categories">
-                <EditCategory />
+                <ManageCategory />
               </Route>
               <Route exact path="/edit/categories/add">
                 <AddCategory />
+              </Route>
+              <Route exact path="/edit/categories/edit/:categoryId">
+                <EditCategory />
               </Route>
               <Route path = "**" render = {() => <NotFound/>}></Route>
             </Switch>

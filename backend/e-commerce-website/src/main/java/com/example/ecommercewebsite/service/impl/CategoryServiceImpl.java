@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findCategoryByName(category.getName());
         if (category.getName() == null || category.getName().length() == 0)
             return false;
-        if (categoryOptional.isPresent())
+        if (categoryOptional.isPresent() && categoryOptional.get().getId() != category.getId())
             return false;
         return true;
     }
@@ -31,6 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Optional<Category> getCategory(Long categoryId) {
+        return categoryRepository.findById(categoryId);
+    }
+
+    @Override
+    public Optional<Category> getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId);
     }
 
