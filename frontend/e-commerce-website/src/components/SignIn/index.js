@@ -31,7 +31,7 @@ export default class index extends Component {
             console.log(localStorage.getItem("token"));
             this.props.onSignIn(e);
         }).catch((error) => {
-              alert("Sign in failed.");
+              alert(error.response.data.message);
         });
         
     }

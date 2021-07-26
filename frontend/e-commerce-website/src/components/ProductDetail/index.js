@@ -116,18 +116,18 @@ class ProductDetail extends Component {
                     <h4>Reviews({this.state.ratingList.length})</h4>
                     {localStorage.getItem("loggedIn") && (
                     <form onSubmit={(e) => this.handleFormSubmit(e)} id="form_submit">
-                        <div>
-                            <label>
+                        <div id="user-review">
+                            <div>
                                 <textarea 
                                     id="user_rating" 
                                     value={this.state.value} 
-                                    onChange={(e) => this.handleFieldChange(e, "value")} 
+                                    onChange={(e) => this.handleFieldChange(e, "value")}
                                 />
-                            </label>
+                            </div>
                             <Rating
                                 emptySymbol="fa fa-star-o fa-2x"
                                 fullSymbol="fa fa-star fa-2x"
-                                id = "product-rating"
+                                id = "list-rating"
                                 initialRating={this.state.rating_point}
                                 onClick={(rating) => this.handleClick(rating)} 
                             />
@@ -138,7 +138,7 @@ class ProductDetail extends Component {
                     <div id="list-reviews">
                         {this.state.ratingList.map((rating) => (
                             <div id="item-review">
-                                <div id="content-review">
+                                <div>
                                     <p><b>{rating.user.name}</b><br></br>
                                     {rating.content}<br></br>
                                     {rating.rating_date}</p>
@@ -146,7 +146,7 @@ class ProductDetail extends Component {
                                 <Rating
                                     emptySymbol="fa fa-star-o fa-2x"
                                     fullSymbol="fa fa-star fa-2x"
-                                    id = "product-rating"
+                                    id = "list-rating"
                                     initialRating={rating.rating_point}
                                     readonly
                                 />

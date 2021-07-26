@@ -126,7 +126,7 @@ export default class Navbar extends Component {
                   <DropdownItem href="/edit/password">Change password</DropdownItem>
                   <DropdownItem href="/edit/categories">Manage categories</DropdownItem>
                   <DropdownItem href="/edit/products">Manage products</DropdownItem>
-                  <DropdownItem href="/block">Manage users</DropdownItem>
+                  <DropdownItem href="/manage/users">Manage users</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={ this.handleLogOut }>Log out</DropdownItem>
                 </DropdownMenu>

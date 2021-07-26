@@ -1,6 +1,8 @@
 package com.example.ecommercewebsite.service.impl;
 
 import com.example.ecommercewebsite.entity.Order;
+import com.example.ecommercewebsite.entity.Role;
+import com.example.ecommercewebsite.entity.RoleName;
 import com.example.ecommercewebsite.entity.User;
 import com.example.ecommercewebsite.payload.request.ChangeProfileRequest;
 import com.example.ecommercewebsite.repository.UserRepository;
@@ -10,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,14 +64,25 @@ public class UserServiceImpl implements UserSerivce {
 
     @Override
     public List<User> viewUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        List<User> results = new ArrayList<>();
+        for (User user : users) {
+            boolean isUser = true;
+            for (Role role : user.getRoles()) {
+                if (role.getName().equals(RoleName.ROLE_ADMIN))
+                    isUser = false;
+            }
+            if (isUser == true)
+                results.add(user);
+        }
+        return results;
     }
 
     @Override
     public Optional<User> blockUser(Long userId) {
         return userRepository.findById(userId)
                 .map(user -> {
-                    user.setStatus(false);
+                    user.setStatus(!user.getStatus());
                     return userRepository.save(user);
                 });
     }
@@ -76,6 +90,16 @@ public class UserServiceImpl implements UserSerivce {
     @Override
     public Optional<User> getUserByUser_name(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Override
+    public Optional<User> findUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
 

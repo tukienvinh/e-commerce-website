@@ -1,8 +1,10 @@
 package com.example.ecommercewebsite.restcontroller;
 
 import com.example.ecommercewebsite.entity.User;
+import com.example.ecommercewebsite.payload.response.MessageResponse;
 import com.example.ecommercewebsite.service.UserSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +30,14 @@ public class AdminController {
         return userSerivce.blockUser(userId);
     }
 
-
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        Optional<User> user = userSerivce.findUserById(userId);
+        if (!user.isPresent())
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found."));
+        userSerivce.deleteUser(userId);
+        return ResponseEntity.ok().body(new MessageResponse("Delete user successfully."));
+    }
 }

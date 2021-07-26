@@ -22,4 +22,8 @@ public interface UserSerivce {
     Optional<User> blockUser(Long userId);
 
     Optional<User> getUserByUser_name(String username);
+
+    void deleteUser(Long userId);
+
+    Optional<User> findUserById(Long userId);
 }

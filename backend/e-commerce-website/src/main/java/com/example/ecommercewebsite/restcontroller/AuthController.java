@@ -72,7 +72,9 @@ public class AuthController {
 
         Optional<User> user = userSerivce.getUserByUser_name(userDetails.getUsername());
         if (user.get().getStatus() == false)
-            return ResponseEntity.ok(new MessageResponse("User is blocked."));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User has been blocked."));
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())

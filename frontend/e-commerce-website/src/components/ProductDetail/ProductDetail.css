@@ -43,7 +43,7 @@ p {
 
 #user_rating {
     width: 600px;
-    height: 100px;
+    min-height: 100px;
 }
 
 #form_submit {
@@ -55,18 +55,29 @@ p {
 }
 
 #item-review {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    flex-direction: row;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-direction: column;
     display: flex;
+    border: solid black 1px;
+    width: 600px;
 }
 
 #item-review p {
     margin-top: 0px;
+    margin-left: 10px;
 }
 
-#content-review {
-    border: solid black 1px;
+#list-rating {
+    color: #f9d81c;
+    text-align: right;
+    margin-right: 10px;
+}
+
+#user-review {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-direction: column;
     width: 600px;
-    height: 100px;
+    display: flex;
 }
