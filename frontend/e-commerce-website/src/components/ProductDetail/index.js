@@ -102,7 +102,7 @@ class ProductDetail extends Component {
                             />
                             <h5>{this.state.product.rating}/5</h5>
                         </div>
-                        <h5>{this.state.product.num_rating} reviews</h5>
+                        <h5>{this.state.ratingList.length} reviews</h5>
                         <h5>Description</h5>
                         <div id="description">
                             <hr/>

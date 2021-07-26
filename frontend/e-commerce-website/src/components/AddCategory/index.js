@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { post } from "../../httpHelper";
 import './AddCategory.css';
 
-export default class index extends Component {
+export default class AddCategory extends Component {
     constructor(props) {
         super(props);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -18,12 +18,12 @@ export default class index extends Component {
     handleFormSubmit(e) {
         e.preventDefault();
         post(`/api/categories/category`, {
-            name: this.state.name,
-            description: this.state.description
+            name: this.state.name.trim(),
+            description: this.state.description.trim()
         }).then((response) => {
             window.location.href = "/edit/categories";
         }).catch((error) => {
-              alert("Create new category failed.");
+            alert(error.response.data.message);
         });
         
     }

@@ -1,0 +1,88 @@
+#add_product_form {
+    border: 5px solid #d3d3d3;
+    border-radius: .5em;
+    margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    padding: 1em;
+    width: 600px;
+}
+
+h2 {
+    color: #57117f;
+}
+
+#name_group {
+    margin-top: 10px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#author_group {
+    margin-top: 10px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#category_group {
+    margin-top: 10px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#description_group {
+    margin-top: 10px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#price_group {
+    margin-top: 10px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#stock_group {
+    margin-top: 10px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#image_group {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#button {
+    margin-top: 10px;
+    
+}
+
+#button:hover {
+    background-color: #57117f;
+}
+
+.form {
+    padding: 1em;
+  }
+  
+label {
+    font-weight: 600;
+}

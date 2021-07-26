@@ -25,18 +25,17 @@ export default class index extends Component {
     validateField() {
         var isValid = true;
         var errors = {};
-
-        if (this.state.name === "") {
+        if (this.state.name.trim().length === 0) {
             isValid = false;
             errors["name"] = "Please enter your name";
         }
 
-        if (this.state.email === "") {
+        if (this.state.email.trim().length === 0) {
             isValid = false;
             errors["email"] = "Please enter your email address";
         }
 
-        if (this.state.username === "") {
+        if (this.state.username.trim().length === 0) {
             isValid = false;
             errors["username"] = "Please enter your username";
         }
@@ -46,12 +45,12 @@ export default class index extends Component {
             errors["username"] = "Username can't contain blank";
         }
 
-        if (this.state.password === "") {
+        if (this.state.password.trim().length === 0) {
             isValid = false;
             errors["password"] = "Please enter your password.";
           }
       
-          if (this.state.confirm_password === "") {
+          if (this.state.confirm_password.trim().length === 0) {
             isValid = false;
             errors["confirm_password"] = "Please enter your confirm password.";
           }
@@ -72,7 +71,7 @@ export default class index extends Component {
         e.preventDefault();
         if(this.validateField()) {
             post(`/api/auth/signup`, {
-                name: this.state.name,
+                name: this.state.name.trim(),
                 username: this.state.username,
                 email: this.state.email,
                 password: this.state.password

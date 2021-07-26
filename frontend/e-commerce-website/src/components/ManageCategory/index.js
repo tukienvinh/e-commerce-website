@@ -53,6 +53,7 @@ export default class index extends Component {
     render() {
         return (
             <div>
+                <h1>Manage Categories</h1>
                 <table id="table">
                 <thead>
                     <tr>

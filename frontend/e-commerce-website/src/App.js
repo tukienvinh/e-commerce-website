@@ -12,6 +12,8 @@ import ManageCategory from './components/ManageCategory';
 import AddCategory from './components/AddCategory';
 import EditCategory from './components/EditCategory';
 import ManageUsers from './components/ManageUsers';
+import ManageProducts from './components/ManageProducts';
+import AddProduct from './components/AddProduct';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -46,7 +48,7 @@ class App extends React.Component {
             <Navbar onSearchKey={(e) => this.handleSearchKey(e)} isLoggedIn={this.state.isLoggedIn}/>
             <Switch>
               <Route exact path="/">
-                <Home />
+                <Product />
               </Route>
               <Route exact path="/signin">
                 <SignIn onSignIn={ (e) => this.handleSignIn(e) }/>
@@ -77,6 +79,12 @@ class App extends React.Component {
               </Route>
               <Route exact path="/manage/users">
                 <ManageUsers />
+              </Route>
+              <Route exact path="/manage/products">
+                <ManageProducts />
+              </Route>
+              <Route exact path="/manage/products/add">
+                <AddProduct />
               </Route>
               <Route path = "**" render = {() => <NotFound/>}></Route>
             </Switch>

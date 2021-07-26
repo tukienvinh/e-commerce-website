@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { FaBan, FaTrash } from 'react-icons/fa';
 import { get, post, del } from "../../httpHelper";
 import { Button } from 'reactstrap';
-import './ManageUsers.css'
 
 export default class index extends Component {
     constructor(props) {
@@ -58,6 +57,7 @@ export default class index extends Component {
     render() {
         return (
             <div>
+                <h1>Manage Users</h1>
                 <table id="table">
                 <thead>
                     <tr>

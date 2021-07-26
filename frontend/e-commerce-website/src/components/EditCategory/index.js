@@ -7,7 +7,6 @@ import './EditCategory.css';
 class EditCategory extends Component {
     constructor(props) {
         super(props);
-        this.fetchCategoryById = this.fetchCategoryById.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.validateField = this.validateField.bind(this);
@@ -19,10 +18,6 @@ class EditCategory extends Component {
         category: [],
         errors: {}
     };
-
-    componentDidMount() {
-        this.fetchCategoryById();
-    }
 
     validateField() {
         var isValid = true;
@@ -43,17 +38,6 @@ class EditCategory extends Component {
         });
 
         return isValid;
-    };
-
-    fetchCategoryById() {
-        get(`/api/categories/category/${this.props.match.params.categoryId}`).then((response) => {
-            if (response.status === 200) {
-              console.log(response.data);
-              this.setState({ category: response.data });
-            }
-          }).catch((error => {
-              console.log(error.message);
-          }));
     };
 
     handleFormSubmit(e) {
@@ -93,7 +77,6 @@ class EditCategory extends Component {
                         type="text"
                         name="category_name"
                         id="category_name"
-                        placeholder={this.state.category.name}
                         onChange={(e) => this.handleFieldChange(e, "name")}
                         />
                         <div className="text-danger">{this.state.errors.name}</div>
@@ -104,7 +87,6 @@ class EditCategory extends Component {
                         type="description"
                         name="description"
                         id="description"
-                        placeholder={this.state.category.description}
                         onChange={(e) => this.handleFieldChange(e, "description")}
                         />
                         <div className="text-danger">{this.state.errors.description}</div>
