@@ -24,7 +24,7 @@ create table product (
 	description text not null,
 	price numeric check(price > 0) not null,
 	stock int not null,
-	image varchar(250),
+	image text,
 	created_date text not null,
 	updated_date text,
 	rating decimal(10, 1) not null,
@@ -107,7 +107,7 @@ create table rating (
 	user_id int not null ,
 	rating_point decimal(10, 1) not null,
 	content varchar(250),
-	rating_date date,
+	rating_date text,
 	primary key (product_id, user_id),
 	foreign key(product_id) references product(id),
 	foreign key(user_id) references user(id)

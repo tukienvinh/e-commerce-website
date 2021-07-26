@@ -22,14 +22,13 @@ public class Rating {
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    @JsonIgnore
     private User user;
 
-    private Double rating_point = 5.0;
+    private Long rating_point = 5L;
 
     private String content;
 
-    private Date rating_date;
+    private String rating_date;
 
     public Long getProduct_id() {
         return product_id;
@@ -47,11 +46,11 @@ public class Rating {
         this.user_id = user_id;
     }
 
-    public Double getRating_point() {
+    public Long getRating_point() {
         return rating_point;
     }
 
-    public void setRating_point(Double rating_point) {
+    public void setRating_point(Long rating_point) {
         this.rating_point = rating_point;
     }
 
@@ -79,11 +78,11 @@ public class Rating {
         this.content = content;
     }
 
-    public Date getRating_date() {
+    public String getRating_date() {
         return rating_date;
     }
 
-    public void setRating_date(Date rating_date) {
+    public void setRating_date(String rating_date) {
         this.rating_date = rating_date;
     }
 }

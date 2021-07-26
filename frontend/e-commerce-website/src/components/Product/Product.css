@@ -1,5 +1,5 @@
 .row {
-    margin-top: 1.5rem;
+    margin: 1.5rem 1.5rem 1.5rem 1.5rem;
 }
 
 .row img {
@@ -21,4 +21,8 @@
     background-color: #57117f;
     color: white;
     text-decoration: none;
+}
+
+#product-rating {
+    color: #f9d81c;
 }

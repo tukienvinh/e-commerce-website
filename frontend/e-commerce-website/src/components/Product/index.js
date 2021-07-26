@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { get } from "../../httpHelper";
 import { Button } from 'reactstrap';
 import './Product.css';
+import 'font-awesome/css/font-awesome.min.css';
+import Rating from 'react-rating'
+
 export default class Product extends Component {
     constructor(props) {
         super(props);
@@ -43,12 +46,21 @@ export default class Product extends Component {
                         <div class="card-body">
                             <h5 class="card-title">{product.name}</h5>
                             <h6 class="card-subtitle">{product.author}</h6>
-                            <p class="card-text">
+                            <div>
+                                <Rating
+                                    emptySymbol="fa fa-star-o fa-2x"
+                                    fullSymbol="fa fa-star fa-2x"
+                                    initialRating={product.rating}
+                                    readonly
+                                    id = "product-rating"
+                                />
+                            </div>
+                            <h6 class="card-text">
                                 {product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}
-                            </p>
-                            <p class="card-text">
+                            </h6>
+                            <h6 class="card-text">
                                 Available: {product.stock}
-                            </p>
+                            </h6>
                             <Button id="btn_detail" href={`/products/${product.id}`}>View Details</Button>
                         </div>
                     </div>

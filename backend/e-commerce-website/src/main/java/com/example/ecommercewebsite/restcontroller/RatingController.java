@@ -1,9 +1,11 @@
 package com.example.ecommercewebsite.restcontroller;
 
 import com.example.ecommercewebsite.entity.Rating;
+import com.example.ecommercewebsite.payload.response.MessageResponse;
 import com.example.ecommercewebsite.security.service.UserDetailsImpl;
 import com.example.ecommercewebsite.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +26,14 @@ public class RatingController {
     }
 
     @PostMapping
-    private boolean addRating(@RequestBody Rating newRating) {
+    private ResponseEntity<?> addRating(@RequestBody Rating newRating) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return ratingService.addRating(newRating, userDetails.getId());
+        boolean notRated = ratingService.addRating(newRating, userDetails.getId());
+        if (notRated == false)
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("User rated for this product."));
+        return ResponseEntity.ok().body(new MessageResponse("Rate for product successfully."));
     }
 }

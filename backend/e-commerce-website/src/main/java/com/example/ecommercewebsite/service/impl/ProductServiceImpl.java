@@ -51,6 +51,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product newProduct) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+
         if (isValidate(newProduct) == true)
             return productRepository.findById(newProduct.getId())
                     .map(product -> {
@@ -60,10 +64,8 @@ public class ProductServiceImpl implements ProductService {
                         product.setPrice(newProduct.getPrice());
                         product.setDescription(newProduct.getDescription());
                         product.setStock(newProduct.getStock());
-                        product.setCreated_date(newProduct.getCreated_date());
-                        product.setUpdated_date(newProduct.getUpdated_date());
+                        product.setUpdated_date(formattedDateTime);
                         product.setImage(newProduct.getImage());
-                        product.setRatings(newProduct.getRatings());
                         return saveProduct(product);
                     })
                     .orElseGet(() -> saveProduct(newProduct));

@@ -56,10 +56,13 @@ public class Product {
     private List<Rating> ratings;
 
     @Column(name="rating")
-    private Double rating;
+    private Double rating = 0.0;
 
     @Column(name="num_rating")
     private Long num_rating = 0L;
+
+    @Column(name = "total_rating")
+    private Long total_rating = 0L;
 
     public Long getId() {
         return id;
@@ -163,5 +166,13 @@ public class Product {
 
     public void setNum_rating(Long num_rating) {
         this.num_rating = num_rating;
+    }
+
+    public Long getTotal_rating() {
+        return total_rating;
+    }
+
+    public void setTotal_rating(Long total_rating) {
+        this.total_rating = total_rating;
     }
 }

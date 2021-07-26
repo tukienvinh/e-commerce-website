@@ -8,6 +8,11 @@
 
 #product_detail {
     margin-top: 20px;
+    text-align: left;
+}
+
+#product_detail p {
+    text-align: justify;
 }
 
 h5 {
@@ -16,4 +21,52 @@ h5 {
 
 p {
     margin-top: 20px;
+}
+
+#product-rating {
+    color: #f9d81c;
+    margin-top: 10px;
+}
+
+#rating-point {
+    flex-direction: row;
+    display: flex;
+}
+
+#rating-point h5 {
+    margin-left: 10px;
+}
+
+#reviews {
+    text-align: left;
+}
+
+#user_rating {
+    width: 600px;
+    height: 100px;
+}
+
+#form_submit {
+    margin-top: 1.5rem;
+}
+
+#list-reviews {
+    margin-top: 1.5rem;
+}
+
+#item-review {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-direction: row;
+    display: flex;
+}
+
+#item-review p {
+    margin-top: 0px;
+}
+
+#content-review {
+    border: solid black 1px;
+    width: 600px;
+    height: 100px;
 }
