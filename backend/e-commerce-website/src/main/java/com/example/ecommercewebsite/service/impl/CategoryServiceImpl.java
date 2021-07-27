@@ -54,8 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category saveCategory(Category newCategory) {
-        isValidate(newCategory);
-        return categoryRepository.save(newCategory);
+        if (isValidate(newCategory))
+            return categoryRepository.save(newCategory);
+        return null;
     }
 
     @Override

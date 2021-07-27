@@ -14,6 +14,7 @@ import EditCategory from './components/EditCategory';
 import ManageUsers from './components/ManageUsers';
 import ManageProducts from './components/ManageProducts';
 import AddProduct from './components/AddProduct';
+import EditProduct from './components/EditProduct';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -85,6 +86,9 @@ class App extends React.Component {
               </Route>
               <Route exact path="/manage/products/add">
                 <AddProduct />
+              </Route>
+              <Route exact path="/manage/products/edit/:productId">
+                <EditProduct />
               </Route>
               <Route path = "**" render = {() => <NotFound/>}></Route>
             </Switch>

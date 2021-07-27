@@ -18,7 +18,10 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     public boolean isValidate(Product product) {
+        Optional<Product> productOptional = productRepository.findProductByName(product.getName());
         if (product.getName() == null || product.getName().length() == 0)
+            return false;
+        if (productOptional.isPresent() && productOptional.get().getId() != product.getId())
             return false;
         return true;
     }
@@ -35,13 +38,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product newProduct) {
-        isValidate(newProduct);
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = currentDateTime.format(formatter);
-        newProduct.setCreated_date(formattedDateTime);
-        newProduct.setUpdated_date(formattedDateTime);
-        return productRepository.save(newProduct);
+        if (isValidate(newProduct)) {
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = currentDateTime.format(formatter);
+            newProduct.setCreated_date(formattedDateTime);
+            newProduct.setUpdated_date(formattedDateTime);
+            return productRepository.save(newProduct);
+        }
+        return null;
     }
 
     @Override

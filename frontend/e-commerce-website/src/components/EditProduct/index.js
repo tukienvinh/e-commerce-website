@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { get, post } from "../../httpHelper";
-import './AddProduct.css';
+import { get, put } from "../../httpHelper";
+import './EditProduct.css';
 import FileBase64 from 'react-file-base64';
+import { withRouter } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default class AddProduct extends Component {
+class EditProduct extends Component {
     constructor(props) {
         super(props);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -20,6 +21,7 @@ export default class AddProduct extends Component {
         errors: {},
         name: "",
         category_id: "",
+        category_name: "",
         author: "",
         description: "",
         price: 0,
@@ -29,6 +31,7 @@ export default class AddProduct extends Component {
 
     componentDidMount() {
         this.fetchCategoryList();
+        this.fetchProductById();
     };
 
     validateField() {
@@ -59,7 +62,7 @@ export default class AddProduct extends Component {
             errors
         });
         return isValid;
-    }
+    };
 
     fetchCategoryList() {
         get(`/api/categories`).then((response) => {
@@ -70,17 +73,43 @@ export default class AddProduct extends Component {
                 });
             }
         })
-    }
+    };
+
+    fetchProductById() {
+        get(`/api/products/product/${this.props.match.params.productId}`).then((response) => {
+            if (response.status === 200) {
+                this.setState({
+                    name: response.data.name,
+                    category_id: response.data.category.id,
+                    category_name: response.data.category.name,
+                    author: response.data.author,
+                    description: response.data.description,
+                    price: response.data.price,
+                    stock: response.data.stock,
+                    image: response.data.image
+                });
+            }
+        }).catch((error => {
+            confirmAlert({
+                title: 'Error',
+                message: error.response.data.message,
+                buttons: [
+                  {
+                    label: 'Ok'
+                  },
+                ]
+            });
+        }));
+    };
+
     handleFormSubmit(e) {
         e.preventDefault();
-        var id = this.state.category_id;
-        if (this.state.category_id === "")
-            id = this.state.categoryList[0].id;
         if (this.validateField()) {
-            post(`/api/products/product`, {
+            put(`/api/products/product`, {
+                id: this.props.match.params.productId,
                 name: this.state.name,
                 category: {
-                    id: id
+                    id: this.state.category_id
                 },
                 author: this.state.author,
                 description: this.state.description,
@@ -89,16 +118,8 @@ export default class AddProduct extends Component {
                 image: this.state.image
             }).then((response) => {
                 if (response.status === 200) {
-                    confirmAlert({
-                        title: 'Notification',
-                        message: response.data.message,
-                        buttons: [
-                          {
-                            label: 'Ok',
-                            onClick: () => window.location.href = "/manage/products"
-                          }
-                        ]
-                    });
+                    alert(response.data.message);
+                    window.location.href = "/manage/products";
                 }
             }).catch((error) => {
                 confirmAlert({
@@ -107,7 +128,7 @@ export default class AddProduct extends Component {
                     buttons: [
                       {
                         label: 'Ok'
-                      }
+                      },
                     ]
                 });
             });
@@ -126,8 +147,8 @@ export default class AddProduct extends Component {
 
     render() {
         return (
-            <div id="add_product_form">
-                <h2>Add new product</h2>
+            <div id="edit_product_form">
+                <h2>Edit product</h2>
                 <Form className="form" onSubmit={(e) => this.handleFormSubmit(e)}>
                     <FormGroup id="name_group">
                         <Label for="name">Product Name</Label>
@@ -136,6 +157,7 @@ export default class AddProduct extends Component {
                             name="name"
                             id="name"
                             placeholder="Product Name"
+                            value={this.state.name}
                             onChange={(e) => this.handleFieldChange(e, "name")}
                             required
                         />
@@ -145,7 +167,11 @@ export default class AddProduct extends Component {
                         <Label for="category">Category</Label>
                         <Input type="select" name="category" id="category" required onChange={(e) => this.handleFieldChange(e, "category_id")}>
                             {this.state.categoryList.map((category) => (
-                                <option value={category.id}>{category.name}</option>
+                                this.state.category_id === category.id ? (
+                                    <option value={this.state.category_id} selected>{this.state.category_name}</option>
+                                ) : (
+                                    <option value={category.id}>{category.name}</option>
+                                )
                             ))}
                         </Input>
                     </FormGroup>
@@ -156,6 +182,7 @@ export default class AddProduct extends Component {
                             name="author"
                             id="author"
                             placeholder="Author"
+                            value={this.state.author}
                             onChange={(e) => this.handleFieldChange(e, "author")}
                             required
                         />
@@ -168,6 +195,7 @@ export default class AddProduct extends Component {
                             name="description"
                             id="description"
                             placeholder="Description"
+                            value={this.state.description}
                             onChange={(e) => this.handleFieldChange(e, "description")}
                             required
                         />
@@ -182,6 +210,7 @@ export default class AddProduct extends Component {
                             name="price"
                             id="price"
                             placeholder="Price"
+                            value={this.state.price}
                             onChange={(e) => this.handleFieldChange(e, "price")}
                             required
                         />
@@ -192,6 +221,7 @@ export default class AddProduct extends Component {
                             type="number"
                             min="1"
                             step="1"
+                            value={this.state.stock}
                             name="stock"
                             id="stock"
                             placeholder="Stock"
@@ -212,9 +242,11 @@ export default class AddProduct extends Component {
                         />
                         <div className="text-danger">{this.state.errors.image}</div>
                     </FormGroup>
-                    <Button id="button">Add new product</Button>
+                    <Button id="button">Edit product</Button>
                 </Form>
             </div>
         )
     }
 }
+
+export default withRouter(EditProduct);

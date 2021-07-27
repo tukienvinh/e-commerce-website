@@ -45,26 +45,41 @@ export default class index extends Component {
             errors["username"] = "Username can't contain blank";
         }
 
+        if (this.state.username.trim().length < 3) {
+            isValid = false;
+            errors["username"] = "Username contains at least 3 characters";
+        }
+
         if (this.state.password.trim().length === 0) {
             isValid = false;
             errors["password"] = "Please enter your password.";
-          }
-      
-          if (this.state.confirm_password.trim().length === 0) {
+        }
+        
+        if (/\s/.test(this.state.password)) {
             isValid = false;
-            errors["confirm_password"] = "Please enter your confirm password.";
-          }
-      
-          if (this.state.password !== this.state.confirm_password) {
-              isValid = false;
-              errors["confirm_password"] = "Confirm password does not match.";
-          }
+            errors["password"] = "Password can't contain blank";
+        }
 
-          this.setState({
+        if (this.state.password.trim().length < 6) {
+            isValid = false;
+            errors["password"] = "Password contains at least 6 characters";
+        }
+
+        if (this.state.confirm_password.trim().length === 0) {
+        isValid = false;
+        errors["confirm_password"] = "Please enter your confirm password.";
+        }
+    
+        if (this.state.password !== this.state.confirm_password) {
+            isValid = false;
+            errors["confirm_password"] = "Confirm password does not match.";
+        }
+
+        this.setState({
             errors
-          });
+        });
 
-          return isValid;
+        return isValid;
     };
 
     handleFormSubmit(e) {

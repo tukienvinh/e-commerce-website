@@ -4,6 +4,7 @@ import { get, del, put } from "../../httpHelper";
 import { Button } from 'reactstrap';
 import { Link } from "react-router-dom";
 import './ManageCategory.css'
+import { confirmAlert } from 'react-confirm-alert';
 
 export default class index extends Component {
     constructor(props) {
@@ -31,13 +32,27 @@ export default class index extends Component {
     };
 
     deleteCategory(category) {
-        del(`/api/categories/category/${category}`).then((response) => {
-            if (response.status === 200) {
-                window.location.href = "/edit/categories";
-            }
-        }).catch((error => {
-            alert("Delete category failed.");
-        }));
+        confirmAlert({
+            title: 'Alert',
+            message: 'Confirm to delete this category?',
+            buttons: [
+                {
+                    'label': 'Yes',
+                    onClick: () => {
+                        del(`/api/categories/category/${category}`).then((response) => {
+                            if (response.status === 200) {
+                                window.location.href = "/edit/categories";
+                            }
+                        }).catch((error => {
+                            alert(error.response.data.message);
+                        }));
+                    }
+                },
+                {
+                    'label': 'No'
+                }
+            ]
+        })
     };
 
     editCategory(category) {

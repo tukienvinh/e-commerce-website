@@ -10,15 +10,19 @@ class EditCategory extends Component {
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.validateField = this.validateField.bind(this);
+        this.fetchCategoryById = this.fetchCategoryById.bind(this);
     };
 
     state = {
         name: "",
         description: "",
-        category: [],
         errors: {}
     };
 
+    componentDidMount() {
+        this.fetchCategoryById();
+    };
+    
     validateField() {
         var isValid = true;
         var errors = {};
@@ -38,6 +42,17 @@ class EditCategory extends Component {
         });
 
         return isValid;
+    };
+
+    fetchCategoryById() {
+        get(`/api/categories/category/${this.props.match.params.categoryId}`).then((response) => {
+            this.setState({ 
+                name: response.data.name,
+                description: response.data.description
+            });
+        }).catch((error => {
+            console.log(error.response.data.message);
+        }));
     };
 
     handleFormSubmit(e) {
@@ -77,6 +92,7 @@ class EditCategory extends Component {
                         type="text"
                         name="category_name"
                         id="category_name"
+                        value={this.state.name}
                         onChange={(e) => this.handleFieldChange(e, "name")}
                         />
                         <div className="text-danger">{this.state.errors.name}</div>
@@ -87,6 +103,7 @@ class EditCategory extends Component {
                         type="description"
                         name="description"
                         id="description"
+                        value={this.state.description}
                         onChange={(e) => this.handleFieldChange(e, "description")}
                         />
                         <div className="text-danger">{this.state.errors.description}</div>

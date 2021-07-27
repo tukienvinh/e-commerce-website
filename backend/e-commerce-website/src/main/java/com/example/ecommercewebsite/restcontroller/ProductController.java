@@ -2,8 +2,10 @@ package com.example.ecommercewebsite.restcontroller;
 
 import com.example.ecommercewebsite.entity.Product;
 import com.example.ecommercewebsite.exception.ProductNotFoundException;
+import com.example.ecommercewebsite.payload.response.MessageResponse;
 import com.example.ecommercewebsite.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,30 +36,33 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public Product saveProduct(@Valid @RequestBody Product product) {
-        return productService.saveProduct(product);
+    public ResponseEntity<?> saveProduct(@Valid @RequestBody Product product) {
+        Product result =  productService.saveProduct(product);
+        if (result == null)
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Product name is already taken."));
+        return ResponseEntity.ok().body(new MessageResponse("Add product successfully."));
     }
 
     @DeleteMapping("/product/{productId}")
-    public HashMap<String, String> deleteProduct(@PathVariable(name="productId") Long productId) {
+    public ResponseEntity<?> deleteProduct(@PathVariable(name="productId") Long productId) {
         Optional<Product> product = productService.getProduct(productId);
         if (product.isPresent() == false) {
             throw new ProductNotFoundException(productId);
         }
         productService.deleteProduct(productId);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("message", "Delete product successfully!");
-        return map;
+        return ResponseEntity.ok().body(new MessageResponse("Delete product successfully."));
     }
 
     @PutMapping("/product")
-    public HashMap<String, String> updateProduct(@RequestBody Product newProduct) {
-        HashMap<String, String> map = new HashMap<>();
+    public ResponseEntity<?> updateProduct(@RequestBody Product newProduct) {
         Product product = productService.updateProduct(newProduct);
         if (product == null) {
-            map.put("message", "Fail to update product!");
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Product name is already taken"));
         }
-        else map.put("message", "Update product successfully!");
-        return map;
+        return ResponseEntity.ok().body(new MessageResponse("Update product successfully."));
     }
 }

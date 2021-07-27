@@ -51,8 +51,13 @@ public class CategoryController {
 
     @PostMapping("/category")
     @PreAuthorize("hasRole('ADMIN')")
-    public Category saveCategory(@Valid @RequestBody Category category) {
-        return categoryService.saveCategory(category);
+    public ResponseEntity<?> saveCategory(@Valid @RequestBody Category category) {
+        Category result = categoryService.saveCategory(category);
+        if (result == null)
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Category name is already taken."));
+        return ResponseEntity.ok().body(new MessageResponse("Add category successfully."));
     }
 
     @DeleteMapping("/category/{categoryId}")

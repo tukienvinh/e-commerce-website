@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
-import { get, post, del } from "../../httpHelper";
-import { Link } from "react-router-dom";
+import { get, del } from "../../httpHelper";
 import { Button } from 'reactstrap';
 import './ManageProducts.css'
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default class index extends Component {
     constructor(props) {
@@ -34,14 +35,38 @@ export default class index extends Component {
     };
 
     deleteProduct(id) {
-        del(`/api/admins/users/${id}`).then((response) => {
-            if (response.status === 200) {
-                alert(response.data.message);
-                window.location.href = "/manage/users";
-            }
-        }).catch((error => {
-            alert(error.response.data.message);
-        }));
+        confirmAlert({
+            title: 'Alert',
+            message: "Confirm to delete this product?",
+            buttons: [
+              {
+                label: 'Yes',
+                onClick: () => {
+                    var product = this.state.productList.find(product => product.id === id);
+                    if (product.num_rating === 0) {
+                        del(`/api/products/product/${id}`).then((response) => {
+                            if (response.status === 200) {
+                                window.location.href = "/manage/products";
+                            }
+                        }).catch((error => {
+                            confirmAlert({
+                                title: 'Error',
+                                message: error.response.data.message,
+                                buttons: [
+                                    {
+                                        label: 'Ok'
+                                    }
+                                ]
+                            })
+                        }))
+                    }
+                }
+              },
+              {
+                label: 'No',
+              }
+            ]
+        });
     };
 
     render() {
@@ -77,11 +102,12 @@ export default class index extends Component {
                             <img
                                 src={`data:image/jpeg;base64,${product.image}`}
                                 id="item-image"
+                                alt="img"
                             />
                         </td>
                         <td>{product.rating}</td>
-                        <td><Button><FaTrash/></Button></td>
-                        <td><Button><FaEdit/></Button></td>
+                        <td><Button onClick={() => this.deleteProduct(product.id) }><FaTrash/></Button></td>
+                        <td><Button href={`/manage/products/edit/${product.id}`}><FaEdit/></Button></td>
                     </tr>
                     ))}
                 </tbody>
