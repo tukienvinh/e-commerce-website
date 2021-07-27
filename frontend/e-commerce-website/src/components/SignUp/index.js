@@ -35,6 +35,11 @@ export default class index extends Component {
             errors["email"] = "Please enter your email address";
         }
 
+        if (/\s/.test(this.state.email)) {
+            isValid = false;
+            errors["email"] = "Email can't contain blank";
+        }
+
         if (this.state.username.trim().length === 0) {
             isValid = false;
             errors["username"] = "Please enter your username";
@@ -47,7 +52,7 @@ export default class index extends Component {
 
         if (this.state.username.trim().length < 3) {
             isValid = false;
-            errors["username"] = "Username contains at least 3 characters";
+            errors["username"] = "Username must contain at least 3 characters";
         }
 
         if (this.state.password.trim().length === 0) {
@@ -62,7 +67,7 @@ export default class index extends Component {
 
         if (this.state.password.trim().length < 6) {
             isValid = false;
-            errors["password"] = "Password contains at least 6 characters";
+            errors["password"] = "Password must contain at least 6 characters";
         }
 
         if (this.state.confirm_password.trim().length === 0) {

@@ -24,6 +24,8 @@ export default class index extends Component {
         }).then((response) => {
             console.log(response.data);
             localStorage.setItem("name", response.data.name);
+            localStorage.setItem("email", response.data.email);
+            localStorage.setItem("address", response.data.address);
             localStorage.setItem("username", response.data.username);
             localStorage.setItem("role", response.data.roles);
             localStorage.setItem("token", response.data.accessToken);

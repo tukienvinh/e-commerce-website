@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse("User has successfully logged out from the system!"));
     }
 
-    @PostMapping("/edit/password")
+    @PutMapping("/edit/password")
     public ResponseEntity<?> updatePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -74,18 +74,22 @@ public class UserController {
                 changePasswordRequest.getConfirmPassword());
 
         if (updatedUser == null)
-            return ResponseEntity.ok(new MessageResponse("Fail to update password!"));
-        return ResponseEntity.ok(new MessageResponse("Password updated."));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Failed to update password."));
+        return ResponseEntity.ok(new MessageResponse("Password updated successfully."));
     }
 
-    @PostMapping("/edit/profile")
+    @PutMapping("/edit/profile")
     public ResponseEntity<?> updateProfile(@Valid @RequestBody ChangeProfileRequest changeProfileRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         Optional<User> updatedUser = userSerivce.changeProfile(userDetails.getId(), changeProfileRequest);
         if (updatedUser == null)
-            return ResponseEntity.ok(new MessageResponse("Fail to update profile"));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Failed to update profile."));
         return ResponseEntity.ok(new AccountResponse(updatedUser.get().getName(), updatedUser.get().getUsername(), updatedUser.get().getEmail(), updatedUser.get().getAddress()));
     }
 }

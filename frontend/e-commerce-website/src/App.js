@@ -15,6 +15,8 @@ import ManageUsers from './components/ManageUsers';
 import ManageProducts from './components/ManageProducts';
 import AddProduct from './components/AddProduct';
 import EditProduct from './components/EditProduct';
+import EditProfile from './components/EditProfile';
+import EditPassword from './components/EditPassword';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -77,6 +79,12 @@ class App extends React.Component {
               </Route>
               <Route exact path="/edit/categories/edit/:categoryId">
                 <EditCategory />
+              </Route>
+              <Route exact path="/edit/profile">
+                <EditProfile />
+              </Route>
+              <Route exact path="/edit/password">
+                <EditPassword />
               </Route>
               <Route exact path="/manage/users">
                 <ManageUsers />

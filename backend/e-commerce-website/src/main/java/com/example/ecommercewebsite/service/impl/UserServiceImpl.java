@@ -34,7 +34,9 @@ public class UserServiceImpl implements UserSerivce {
 
     @Override
     public Optional<User> changeProfile(Long userId, ChangeProfileRequest changeProfileRequest) {
-        if (userRepository.existsByEmail(changeProfileRequest.getEmail()))
+        Optional<User> findUser = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findByEmail(changeProfileRequest.getEmail());
+        if (findUser.get().getId() != userOptional.get().getId())
             return null;
         return userRepository.findById(userId)
                 .map(user -> {

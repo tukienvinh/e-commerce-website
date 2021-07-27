@@ -17,9 +17,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(name = "name")
     private String name;
 
+    @NotBlank
     @Column(name = "username")
     private String username;
 

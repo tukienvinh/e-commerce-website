@@ -5,13 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { get, post } from "../../httpHelper";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FaSearch } from 'react-icons/fa';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.toggleCategory = this.toggleCategory.bind(this);
-    this.handleViewProfile = this.handleViewProfile.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
     this.fetchCategoryList = this.fetchCategoryList.bind(this);
   }
@@ -44,22 +45,24 @@ export default class Navbar extends Component {
     this.setState({dropdownCategory: !this.state.dropdownCategory})
   };
 
-  handleViewProfile() {
-    get(`/api/users`).then((response) => {
-      if (response.status === 200) {
-        console.log(response.data);
-      }
-    }).catch((error) => {
-      console.log(error.response.data.message);
-    });
-  };
-
   handleLogOut() {
     post(`/api/users/logout`, {}).then((response) => {
-      console.log(response.data);
-      localStorage.clear();
-      window.location.href = "/";
-      alert(response.data.message);
+      if (response.status === 200) {
+        confirmAlert({
+          title: 'Notification',
+          message: response.data.message,
+          buttons: [
+            {
+                label: 'Ok',
+                onClick: () => {
+                  localStorage.clear();
+                  window.location.href = "/";
+                }
+            }
+          ]
+        });
+      }
+      
     }).catch((error) => {
         console.log(error.response.data.message);
     });
@@ -113,7 +116,7 @@ export default class Navbar extends Component {
               </DropdownToggle>
               {localStorage.getItem("role") === "ROLE_USER" ? (
                 <DropdownMenu>
-                <DropdownItem onClick={ this.handleViewProfile }>Your profile</DropdownItem>
+                <DropdownItem href="/edit/profile">Your profile</DropdownItem>
                 <DropdownItem href="/orders">Your orders</DropdownItem>
                 <DropdownItem href="/edit/password">Change password</DropdownItem>
                 <DropdownItem divider />
@@ -121,7 +124,7 @@ export default class Navbar extends Component {
               </DropdownMenu>
               ) : (
                 <DropdownMenu>
-                  <DropdownItem onClick={ this.handleViewProfile }>Your profile</DropdownItem>
+                  <DropdownItem href="/edit/profile">Your profile</DropdownItem>
                   <DropdownItem href="/orders">Pending orders</DropdownItem>
                   <DropdownItem href="/edit/password">Change password</DropdownItem>
                   <DropdownItem href="/edit/categories">Manage categories</DropdownItem>
