@@ -2,8 +2,10 @@
     height: 500px;
 }
 
-#row_detail img {
-    height: 100%;
+#product-img {
+    height: 500px;
+    margin-right: 100px;
+    width: 400px;
 }
 
 #product_detail {
@@ -80,4 +82,10 @@ p {
     flex-direction: column;
     width: 600px;
     display: flex;
+}
+
+#btn-cart {
+    background-color:limegreen;
+    color: white;
+    text-decoration: none;
 }

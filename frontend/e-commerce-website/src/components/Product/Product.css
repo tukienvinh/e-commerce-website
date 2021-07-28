@@ -23,6 +23,13 @@
     text-decoration: none;
 }
 
+#btn_cart {
+    background-color:limegreen;
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
 #product-rating {
     color: #f9d81c;
 }

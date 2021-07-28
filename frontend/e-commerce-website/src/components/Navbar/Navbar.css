@@ -65,3 +65,11 @@
     text-decoration: none;
     color: black;
   }
+
+  #navbar-cart {
+    background-color: #57117f;
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    border: none;
+  }

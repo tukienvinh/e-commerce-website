@@ -4,11 +4,13 @@ import { Button } from 'reactstrap';
 import './Product.css';
 import 'font-awesome/css/font-awesome.min.css';
 import Rating from 'react-rating'
+import { FaEye, FaShoppingCart } from 'react-icons/fa';
 
 export default class Product extends Component {
     constructor(props) {
         super(props);
         this.fetchProductList = this.fetchProductList.bind(this);
+        this.handleAddToCart = this.handleAddToCart.bind(this);
     }
     
     state = {
@@ -23,7 +25,7 @@ export default class Product extends Component {
         get("/api/products").then((response) => {
           if (response.status === 200) {
             response.data.sort(function(a, b) { 
-                return a.id - b.id  ||  a.name.localeCompare(b.name);
+                return b.rating - a.rating || a.price - b.price;
             });
             this.setState({ productList: response.data });
           }
@@ -32,17 +34,54 @@ export default class Product extends Component {
         }));
     }
 
+    handleAddToCart(product) {
+        if (localStorage.getItem("cart") === null) {
+            var newItem = {
+                id: product.id,
+                name: product.name,
+                stock: 1
+            };
+            var cartItem = [];
+            cartItem.push(newItem);
+            localStorage.setItem("cart", JSON.stringify(cartItem));
+            this.setState({
+                cart: cartItem
+            });
+        }
+        else {
+            cartItem = JSON.parse(localStorage.getItem("cart"));
+            console.log(cartItem.find(item => item.name === product.name));
+            if (cartItem.find(item => item.name === product.name) !== undefined) {
+                cartItem.find(item => item.name === product.name).stock += 1;
+            }
+            else {
+                cartItem.push({
+                    id: product.id,
+                    name: product.name,
+                    stock: 1
+                });
+            }
+            localStorage.setItem("cart", JSON.stringify(cartItem));
+            this.setState({
+                cart: cartItem
+            });
+        }
+    };
+
     render() {
         return (
             <div class="row">
+                <h1>Product List</h1>
                 {this.state.productList.map((product) => (
                 <div class="col-md-3 col-sm-6" id="card" key={product.id}>
                     <div class="card">
-                        <img
-                        src={`data:image/jpeg;base64,${product.image}`}
-                        class="card-img-top"
-                        alt="P_1"
-                        />
+                        <a href={`/products/${product.id}`}>
+                            <img
+                                src={`data:image/jpeg;base64,${product.image}`}
+                                class="card-img-top"
+                                alt="P_1"
+                            />
+                        </a>
                         <div class="card-body">
                             <h5 class="card-title">{product.name}</h5>
                             <h6 class="card-subtitle">{product.author}</h6>
@@ -61,7 +100,8 @@ export default class Product extends Component {
                             <h6 class="card-text">
                                 Available: {product.stock}
                             </h6>
-                            <Button id="btn_detail" href={`/products/${product.id}`}>View Details</Button>
+                            <Button id="btn_detail" href={`/products/${product.id}`}>View Details <FaEye/></Button>
+                            <Button id="btn_cart" onClick={ () => this.handleAddToCart(product) }>Add to cart <FaShoppingCart/></Button>
                         </div>
                     </div>
                 </div>))}

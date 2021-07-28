@@ -24,6 +24,9 @@ export default class index extends Component {
     fetchCategoryList() {
         get("/api/categories").then((response) => {
             if (response.status === 200) {
+                response.data.sort(function(a, b) { 
+                    return a.id - b.id  ||  a.name.localeCompare(b.name);
+                });
                 this.setState({ categoryList: response.data });
             }
         }).catch((error => {
@@ -44,7 +47,15 @@ export default class index extends Component {
                                 window.location.href = "/edit/categories";
                             }
                         }).catch((error => {
-                            alert(error.response.data.message);
+                            confirmAlert({
+                                title: 'Error',
+                                message: error.response.data.message,
+                                buttons: [
+                                    {
+                                        'label': 'Ok',
+                                    }
+                                ]
+                            })
                         }));
                     }
                 },

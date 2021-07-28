@@ -19,6 +19,7 @@ import EditProfile from './components/EditProfile';
 import EditPassword from './components/EditPassword';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ShoppingCart from './components/ShoppingCart';
 
 class App extends React.Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class App extends React.Component {
             <Navbar onSearchKey={(e) => this.handleSearchKey(e)} isLoggedIn={this.state.isLoggedIn}/>
             <Switch>
               <Route exact path="/">
-                <Product />
+                <Home />
               </Route>
               <Route exact path="/signin">
                 <SignIn onSignIn={ (e) => this.handleSignIn(e) }/>
@@ -97,6 +98,9 @@ class App extends React.Component {
               </Route>
               <Route exact path="/manage/products/edit/:productId">
                 <EditProduct />
+              </Route>
+              <Route exact path="/shopping-cart">
+                <ShoppingCart />
               </Route>
               <Route path = "**" render = {() => <NotFound/>}></Route>
             </Switch>

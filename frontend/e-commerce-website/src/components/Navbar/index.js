@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { Button } from 'reactstrap';
 import './Navbar.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { get, post } from "../../httpHelper";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { FaSearch } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -94,12 +95,15 @@ export default class Navbar extends Component {
             </Link>
           </ul>
 
-          <div class="search-container">
+          {/*Search bar */}
+          {/* <div class="search-container">
             <form action="/search">
               <input type="text" placeholder="Search for your book.." name="search" onChange={(e) => this.props.onSearchKey(e)}/>
               <button type="submit"><FaSearch/></button>
             </form>
-          </div>
+          </div> */}
+
+          <Button id="navbar-cart" href="/shopping-cart"><FaShoppingCart/></Button>
           { !localStorage.getItem("loggedIn") ? (
             <ul>
             <Link to="/signin">
@@ -117,7 +121,6 @@ export default class Navbar extends Component {
               {localStorage.getItem("role") === "ROLE_USER" ? (
                 <DropdownMenu>
                 <DropdownItem href="/edit/profile">Your profile</DropdownItem>
-                <DropdownItem href="/orders">Your orders</DropdownItem>
                 <DropdownItem href="/edit/password">Change password</DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={ this.handleLogOut } >Log out</DropdownItem>
@@ -125,7 +128,6 @@ export default class Navbar extends Component {
               ) : (
                 <DropdownMenu>
                   <DropdownItem href="/edit/profile">Your profile</DropdownItem>
-                  <DropdownItem href="/orders">Pending orders</DropdownItem>
                   <DropdownItem href="/edit/password">Change password</DropdownItem>
                   <DropdownItem href="/edit/categories">Manage categories</DropdownItem>
                   <DropdownItem href="/manage/products">Manage products</DropdownItem>

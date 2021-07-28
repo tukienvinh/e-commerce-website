@@ -28,8 +28,8 @@ public class CategoryController {
         return categories;
     }
 
-    @GetMapping("/search")
-    public Optional<Category> findCategory(@RequestParam String categoryName) {
+    @GetMapping("/category/name/{categoryName}")
+    public Optional<Category> findCategoryByName(@PathVariable String categoryName) {
         Optional<Category> category = categoryService.getCategoryByName(categoryName);
         if (category.isPresent() == false)
             throw new CategoryNotFoundException(categoryName);
@@ -61,15 +61,21 @@ public class CategoryController {
     }
 
     @DeleteMapping("/category/{categoryId}")
-    public HashMap<String, String> deleteCategory(@PathVariable(name="categoryId") Long categoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable(name="categoryId") Long categoryId) {
         Optional<Category> category = categoryService.getCategory(categoryId);
         if (category.isPresent() == false) {
-            throw new CategoryNotFoundException(categoryId);
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Category not found."));
         }
+        List<Product> products = category.get().getProducts();
+        for (Product product : products)
+            if (product.getRatings().size() > 0)
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: This category has product that was rated."));
         categoryService.deleteCategory(categoryId);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("message", "Delete successfully!");
-        return map;
+        return ResponseEntity.ok().body(new MessageResponse("Delete category successfully."));
     }
 
     @PutMapping("/category")

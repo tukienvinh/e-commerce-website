@@ -14,6 +14,7 @@ class ProductDetail extends Component {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleAddToCart = this.handleAddToCart.bind(this);
     }
 
     componentDidMount() {
@@ -32,7 +33,6 @@ class ProductDetail extends Component {
     fetchProductById() {
         get(`/api/products/product/${this.props.match.params.productId}`).then((response) => {
             if (response.status === 200) {
-            //   console.log(response.data);
               this.setState({ product: response.data });
             }
           }).catch((error => {
@@ -76,7 +76,41 @@ class ProductDetail extends Component {
 
     handleClick(rating) {
         this.setState({rating_point: rating});
-      }
+    }
+
+    handleAddToCart(product) {
+        if (localStorage.getItem("cart") === null) {
+            var newItem = {
+                id: product.id,
+                name: product.name,
+                stock: 1
+            };
+            var cartItem = [];
+            cartItem.push(newItem);
+            localStorage.setItem("cart", JSON.stringify(cartItem));
+            this.setState({
+                cart: cartItem
+            });
+        }
+        else {
+            cartItem = JSON.parse(localStorage.getItem("cart"));
+            console.log(cartItem.find(item => item.name === product.name));
+            if (cartItem.find(item => item.name === product.name) !== undefined) {
+                cartItem.find(item => item.name === product.name).stock += 1;
+            }
+            else {
+                cartItem.push({
+                    id: product.id,
+                    name: product.name,
+                    stock: 1
+                });
+            }
+            localStorage.setItem("cart", JSON.stringify(cartItem));
+            this.setState({
+                cart: cartItem
+            });
+        }
+    };
 
     render() {
         return (
@@ -87,6 +121,7 @@ class ProductDetail extends Component {
                             src={'data:image/jpg;base64,' + this.state.product.image}
                             class="card-img-top"
                             alt="P_1"
+                            id="product-img"
                         />
                     </div>
                     <div class="col-md-6" id="product_detail">
@@ -108,7 +143,7 @@ class ProductDetail extends Component {
                             <hr/>
                             <p>{this.state.product.description}</p> 
                         </div>
-                        <Button>Add to cart <FaShoppingCart/></Button>
+                        <Button id="btn-cart"  onClick={ () => this.handleAddToCart(this.state.product) }>Add to cart <FaShoppingCart/></Button>
                     </div>
                 </div>
 
